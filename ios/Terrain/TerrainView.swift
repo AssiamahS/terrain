@@ -52,7 +52,11 @@ struct TerrainView: UIViewRepresentable {
         init(_ parent: TerrainView) { self.parent = parent }
 
         func key(snapshot: MKMapSnapshotter.Snapshot, bars: [Bar]) -> String {
-            "\(ObjectIdentifier(snapshot).hashValue)|\(bars.count)|\(bars.first?.id ?? "")|\(bars.first?.height ?? 0)"
+            // every bar counts: a new metric can leave the first bar's rank untouched, which used to skip the rebuild and show stale colors
+            var h = Hasher()
+            h.combine(ObjectIdentifier(snapshot))
+            for b in bars { h.combine(b.id); h.combine(b.height); h.combine(b.color) }
+            return "\(h.finalize())|\(bars.count)"
         }
 
         func build(snapshot: MKMapSnapshotter.Snapshot, bars: [Bar]) -> SCNScene {

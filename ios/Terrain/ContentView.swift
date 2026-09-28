@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var snapshot: MKMapSnapshotter.Snapshot?
     @State private var bars: [TerrainView.Bar] = []
     @State private var building3D = false
+    @State private var buildGen = 0
+    @State private var buildError: String?
 
     private var scope: Scope { store.scope(scopeID) }
     private var metric: Metric? { store.metric(metricID) }
@@ -86,11 +88,14 @@ struct ContentView: View {
             if let m = metric, !m.scopes.contains(scopeID) {
                 metricID = store.catalog?.metrics.first { $0.scopes.contains(scopeID) }?.id ?? metricID
             }
-            if mode3D { await build3D() }
         }
-        .task(id: "\(mode3D)|\(metricID)|\(store.loading)") {
+        // one build task for every input; the scope task above only loads geometry (two tasks used to race and leave stale bars)
+        .task(id: "\(mode3D)|\(metricID)|\(scopeID)|\(store.loading)") {
             if mode3D, !store.loading { await build3D() }
         }
+        .alert("3D view failed", isPresented: Binding(get: { buildError != nil }, set: { if !$0 { buildError = nil } })) {
+            Button("OK") {}
+        } message: { Text(buildError ?? "") }
     }
 
     private var header: some View {
@@ -139,13 +144,35 @@ struct ContentView: View {
 
     /// Snapshot the scope's region and turn the metric into bars.
     private func build3D() async {
-        guard let cents = store.centroids[scopeID], !cents.isEmpty else { return }
+        buildGen += 1
+        let gen = buildGen
+        if store.centroids[scopeID]?.isEmpty ?? true { await store.ensureGeometry(scope) }
+        guard let cents = store.centroids[scopeID], !cents.isEmpty else {
+            buildError = "No geometry for \(scope.title) yet. Check the connection and tap the cube again."
+            mode3D = false
+            return
+        }
         building3D = true
-        defer { building3D = false }
+        defer { if gen == buildGen { building3D = false } }
         let size = CGSize(width: 1400, height: 1400)
         let center = CLLocationCoordinate2D(latitude: scope.lat, longitude: scope.lon)
         let span = MKCoordinateSpan(latitudeDelta: scope.latDelta, longitudeDelta: scope.lonDelta)
-        guard let snap = try? await MapSnapshot.take(center: center, span: span, size: size) else { return }
+        // the map snapshot needs tiles from Apple; it fails now and then on a slow link, so try three times before giving up loudly
+        var snap: MKMapSnapshotter.Snapshot?
+        var lastErr: Error?
+        for attempt in 0..<3 where snap == nil {
+            if Task.isCancelled { return }
+            do { snap = try await MapSnapshot.take(center: center, span: span, size: size) }
+            catch { lastErr = error; try? await Task.sleep(for: .milliseconds(400 * (attempt + 1))) }
+        }
+        guard let snap else {
+            if gen == buildGen {
+                buildError = "Could not render the map ground: \(lastErr?.localizedDescription ?? "unknown"). Tap the cube again."
+                mode3D = false
+            }
+            return
+        }
+        if Task.isCancelled || gen != buildGen { return }   // a newer build superseded this one
         let vals = values
         let b = breaks
         let sorted = vals.values.sorted()
@@ -161,6 +188,7 @@ struct ContentView: View {
             for br in b where v > br { cls += 1 }
             out.append(TerrainView.Bar(id: id, x: p.x, y: p.y, height: 0.05 + 0.95 * (rank[v] ?? 0), color: MapView.ramp[min(cls, MapView.ramp.count - 1)]))
         }
+        if gen != buildGen { return }
         snapshot = snap
         bars = out
     }

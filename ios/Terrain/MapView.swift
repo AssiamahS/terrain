@@ -42,9 +42,11 @@ struct MapView: UIViewRepresentable {
 
     func updateUIView(_ map: MKMapView, context: Context) {
         let c = context.coordinator
-        let key = "\(scope.id)|\(metric?.id ?? "")|\(features.count)"
+        let key = "\(scope.id)|\(features.count)"
+        let styleKey = "\(metric?.id ?? "")|\(breaks)|\(values.count)"
         if c.overlayKey != key {
             c.overlayKey = key
+            c.styleKey = styleKey
             map.removeOverlays(map.overlays)
             c.overlayOwner = [:]
             var overlays: [MKOverlay] = []
@@ -63,8 +65,10 @@ struct MapView: UIViewRepresentable {
             }
         }
         c.parent = self
-        if c.selectedKey != selected {
+        // metric or selection change: restyle the renderers in place instead of tearing down thousands of polygons
+        if c.selectedKey != selected || c.styleKey != styleKey {
             c.selectedKey = selected
+            c.styleKey = styleKey
             for o in map.overlays {
                 if let r = map.renderer(for: o) as? MKOverlayPathRenderer {
                     c.style(r, for: o)
@@ -87,6 +91,7 @@ struct MapView: UIViewRepresentable {
     final class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
         var overlayKey = ""
+        var styleKey = ""
         var lastScope: String?
         var lastFocus: String?
         var selectedKey: String?
