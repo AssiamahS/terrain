@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terrain — population map with filters</title>
+<meta name="description" content="A Human Terrain style population map of the Americas for iPhone. Filter US counties by age, race, women per man, singles, young income, bars, strip clubs, gun deaths and voter turnout.">
+<link rel="icon" href="icon-180.png"><link rel="apple-touch-icon" href="icon-180.png">
+<style>
+:root{--bg:#0e0a1c;--card:#1d1730;--line:#2d2544;--muted:#9a94ae;--fg:#fff;--hot:#fa9429}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+main{max-width:680px;margin:0 auto;padding:56px 20px 80px}.brand{display:flex;gap:12px;align-items:center;font-weight:800}.brand img{width:36px;height:36px;border-radius:9px}
+h1{font-size:clamp(34px,7vw,54px);line-height:1.05;letter-spacing:-.03em;margin:36px 0 14px}h1 em{font-style:normal;color:var(--hot)}
+.sub{color:var(--muted);font-size:18px;max-width:540px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:48px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}.card h3{margin:0 0 6px;font-size:16px}.card p{margin:0;color:var(--muted);font-size:14px}
+.btn{display:inline-block;margin-top:26px;padding:14px 22px;border-radius:14px;background:var(--hot);color:#000;font-weight:800;text-decoration:none}
+h2{margin:56px 0 8px;font-size:22px}p.small{color:var(--muted);font-size:14px}a{color:#fff}footer{margin-top:56px;color:#5a5668;font-size:13px;display:flex;gap:16px;flex-wrap:wrap}footer a{color:var(--muted);text-decoration:none}
+</style></head><body><main>
+<div class="brand"><img src="icon-180.png" alt="">Terrain</div>
+<h1>Who lives where.<br><em>Filter the map.</em></h1>
+<p class="sub">Every US county and every country in the Americas, colored by the filter you pick. Tap a place for its full sheet. Data is rebuilt weekly from public sources.</p>
+<a class="btn" href="install.html">Install on iPhone</a>
+<div class="grid">
+<div class="card"><h3>People</h3><p>20-somethings, 30 to 34, median age, Asian, Black, Hispanic, White, foreign-born.</p></div>
+<div class="card"><h3>Sex & relationships</h3><p>Women per man (all ages and 20 to 34), single, married and divorced women, age at first marriage, teen births.</p></div>
+<div class="card"><h3>Money</h3><p>Young household income, investment-income households, degrees, home values, rent, unemployment.</p></div>
+<div class="card"><h3>Nightlife & business</h3><p>Bars per 10k, strip clubs from OpenStreetMap, businesses per capita, excessive drinking.</p></div>
+<div class="card"><h3>Crime & civic</h3><p>Homicides, firearm deaths, 2024 turnout, party lean.</p></div>
+<div class="card"><h3>The Americas</h3><p>Canada to Chile at country level from the CIA World Factbook.</p></div>
+</div>
+<h2>Sources</h2>
+<p class="small">US Census ACS 5-year 2023 and County Business Patterns 2022, County Health Rankings 2025, county-level 2024 presidential returns, OpenStreetMap, Census TIGER boundaries, Natural Earth, CIA World Factbook. Full coverage report: <a href="data/coverage.json">coverage.json</a>.</p>
+<footer><a href="privacy.html">Privacy</a><a href="https://github.com/AssiamahS/terrain">GitHub</a></footer>
+</main></body></html>

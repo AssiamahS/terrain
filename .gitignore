@@ -1,0 +1,6 @@
+ios/*.xcodeproj
+ios/build/
+ios/shots/
+ios/devices.json
+.DS_Store
+__pycache__/

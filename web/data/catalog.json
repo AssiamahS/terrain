@@ -1,0 +1,643 @@
+{
+ "generated": "2026-09-28T06:38:18Z",
+ "metrics": [
+  {
+   "id": "pop",
+   "label": "Population",
+   "group": "People",
+   "unit": "count",
+   "about": "Total residents.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state",
+    "country"
+   ]
+  },
+  {
+   "id": "density",
+   "label": "People per sq mile",
+   "group": "People",
+   "unit": "count",
+   "about": "Population divided by land area.",
+   "source": "ACS 2023 + TIGER",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "median_age",
+   "label": "Median age",
+   "group": "People",
+   "unit": "years",
+   "about": "Half the residents are younger than this.",
+   "source": "ACS 2023 / Factbook",
+   "scopes": [
+    "county",
+    "state",
+    "country"
+   ]
+  },
+  {
+   "id": "age20s_pct",
+   "label": "20-somethings",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share of residents aged 20 to 29.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "age30_34_pct",
+   "label": "Aged 30 to 34",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share of residents aged 30 to 34.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "asian_pct",
+   "label": "Asian",
+   "group": "People",
+   "unit": "pct",
+   "about": "Residents identifying as Asian alone.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "black_pct",
+   "label": "Black",
+   "group": "People",
+   "unit": "pct",
+   "about": "Residents identifying as Black alone.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "hispanic_pct",
+   "label": "Hispanic or Latino",
+   "group": "People",
+   "unit": "pct",
+   "about": "Residents of Hispanic or Latino origin.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "white_pct",
+   "label": "White",
+   "group": "People",
+   "unit": "pct",
+   "about": "Residents identifying as White alone.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "foreign_pct",
+   "label": "Foreign-born",
+   "group": "People",
+   "unit": "pct",
+   "about": "Residents born outside the US.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "f_per_m",
+   "label": "Women per man",
+   "group": "Sex & relationships",
+   "unit": "ratio",
+   "about": "Females for every male, all ages.",
+   "source": "ACS 2023 / Factbook",
+   "scopes": [
+    "county",
+    "state",
+    "country"
+   ]
+  },
+  {
+   "id": "f_per_m_20_34",
+   "label": "Women per man, 20 to 34",
+   "group": "Sex & relationships",
+   "unit": "ratio",
+   "about": "Females per male among 20 to 34 year olds.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "single_women_pct",
+   "label": "Single women",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Women 15+ who have never married.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "married_women_pct",
+   "label": "Married women",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Women 15+ married with spouse present.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "divorced_women_pct",
+   "label": "Divorced women",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Women 15+ currently divorced.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "single_men_pct",
+   "label": "Single men",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Men 15+ who have never married.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "marriage_age_f",
+   "label": "Women's age at first marriage",
+   "group": "Sex & relationships",
+   "unit": "years",
+   "about": "Median age women first marry. Census publishes this for states only.",
+   "source": "ACS 2023",
+   "scopes": [
+    "state"
+   ]
+  },
+  {
+   "id": "marriage_age_m",
+   "label": "Men's age at first marriage",
+   "group": "Sex & relationships",
+   "unit": "years",
+   "about": "Median age men first marry. Census publishes this for states only.",
+   "source": "ACS 2023",
+   "scopes": [
+    "state"
+   ]
+  },
+  {
+   "id": "teen_births",
+   "label": "Teen births per 1,000",
+   "group": "Sex & relationships",
+   "unit": "count",
+   "about": "Births per 1,000 females aged 15 to 19.",
+   "source": "County Health Rankings 2025",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "sti_rate",
+   "label": "Chlamydia per 100k",
+   "group": "Sex & relationships",
+   "unit": "count",
+   "about": "Newly diagnosed chlamydia cases per 100,000.",
+   "source": "County Health Rankings 2025",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "income",
+   "label": "Median household income",
+   "group": "Money",
+   "unit": "money",
+   "about": "Half of households earn more than this.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "income_25_44",
+   "label": "Young household income",
+   "group": "Money",
+   "unit": "money",
+   "about": "Median income where the householder is 25 to 44.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "invest_pct",
+   "label": "Households with investment income",
+   "group": "Money",
+   "unit": "pct",
+   "about": "Households reporting interest, dividend or rental income. Closest public proxy for family money.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "degree_pct",
+   "label": "Bachelor's or higher",
+   "group": "Money",
+   "unit": "pct",
+   "about": "Adults 25+ with at least a bachelor's degree.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "home_value",
+   "label": "Median home value",
+   "group": "Money",
+   "unit": "money",
+   "about": "Owner-estimated median home value.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "rent",
+   "label": "Median rent",
+   "group": "Money",
+   "unit": "money",
+   "about": "Median gross monthly rent.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "unemployment",
+   "label": "Unemployment",
+   "group": "Money",
+   "unit": "pct",
+   "about": "Unemployed share of the civilian labor force.",
+   "source": "ACS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "gdp_pc",
+   "label": "GDP per person",
+   "group": "Money",
+   "unit": "money",
+   "about": "Real GDP per capita, PPP.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  },
+  {
+   "id": "bars_per_10k",
+   "label": "Bars per 10k people",
+   "group": "Nightlife & business",
+   "unit": "rate",
+   "about": "Drinking places (NAICS 722410) per 10,000 residents.",
+   "source": "County Business Patterns 2022",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "stripclubs",
+   "label": "Strip clubs",
+   "group": "Nightlife & business",
+   "unit": "count",
+   "about": "Venues tagged amenity=stripclub on OpenStreetMap.",
+   "source": "OpenStreetMap",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "stripclubs_per_100k",
+   "label": "Strip clubs per 100k",
+   "group": "Nightlife & business",
+   "unit": "rate",
+   "about": "Strip clubs per 100,000 residents (counties over 20k people).",
+   "source": "OpenStreetMap + ACS",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "estab_per_1k",
+   "label": "Businesses per 1k people",
+   "group": "Nightlife & business",
+   "unit": "rate",
+   "about": "All establishments per 1,000 residents.",
+   "source": "County Business Patterns 2022",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "drinking_pct",
+   "label": "Excessive drinking",
+   "group": "Nightlife & business",
+   "unit": "pct",
+   "about": "Adults reporting binge or heavy drinking.",
+   "source": "County Health Rankings 2025",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "homicides",
+   "label": "Homicides per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "Deaths from homicide per 100,000 (multi-year).",
+   "source": "County Health Rankings 2025",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "firearm_deaths",
+   "label": "Firearm deaths per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "Firearm fatalities per 100,000 (multi-year).",
+   "source": "County Health Rankings 2025",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "turnout",
+   "label": "Voter turnout 2024",
+   "group": "Crime & civic",
+   "unit": "pct",
+   "about": "2024 presidential votes divided by citizen voting-age population.",
+   "source": "County returns 2024 + ACS",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "dem_share",
+   "label": "Democratic share 2024",
+   "group": "Crime & civic",
+   "unit": "pct",
+   "about": "Democratic share of the 2024 presidential vote.",
+   "source": "County returns 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "rep_share",
+   "label": "Republican share 2024",
+   "group": "Crime & civic",
+   "unit": "pct",
+   "about": "Republican share of the 2024 presidential vote.",
+   "source": "County returns 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "urban_pct",
+   "label": "Urban population",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share living in urban areas.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  },
+  {
+   "id": "growth",
+   "label": "Population growth",
+   "group": "People",
+   "unit": "pct",
+   "about": "Annual population growth rate.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  },
+  {
+   "id": "unemployment_country",
+   "label": "Unemployment",
+   "group": "Money",
+   "unit": "pct",
+   "about": "Unemployment rate.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  },
+  {
+   "id": "literacy",
+   "label": "Literacy",
+   "group": "People",
+   "unit": "pct",
+   "about": "Adults who can read and write.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  },
+  {
+   "id": "life_exp",
+   "label": "Life expectancy",
+   "group": "People",
+   "unit": "years",
+   "about": "Life expectancy at birth.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  },
+  {
+   "id": "net_migration",
+   "label": "Net migration per 1,000",
+   "group": "People",
+   "unit": "count",
+   "about": "Net migrants per 1,000 people per year.",
+   "source": "CIA World Factbook",
+   "scopes": [
+    "country"
+   ]
+  }
+ ],
+ "suggestions": [
+  {
+   "title": "Where the 20-somethings are",
+   "metric": "age20s_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Most women per man (20 to 34)",
+   "metric": "f_per_m_20_34",
+   "scope": "county"
+  },
+  {
+   "title": "Highest-paid young households",
+   "metric": "income_25_44",
+   "scope": "county"
+  },
+  {
+   "title": "Where Asian Americans live",
+   "metric": "asian_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Most single women",
+   "metric": "single_women_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Married-women country",
+   "metric": "married_women_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Family money (investment income)",
+   "metric": "invest_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Strip club capitals",
+   "metric": "stripclubs_per_100k",
+   "scope": "county"
+  },
+  {
+   "title": "Bar density",
+   "metric": "bars_per_10k",
+   "scope": "county"
+  },
+  {
+   "title": "Gun deaths",
+   "metric": "firearm_deaths",
+   "scope": "county"
+  },
+  {
+   "title": "Homicide rate",
+   "metric": "homicides",
+   "scope": "county"
+  },
+  {
+   "title": "Who actually votes",
+   "metric": "turnout",
+   "scope": "county"
+  },
+  {
+   "title": "Latest to marry (women)",
+   "metric": "marriage_age_f",
+   "scope": "state"
+  },
+  {
+   "title": "Immigrant hubs",
+   "metric": "foreign_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Cheapest rent",
+   "metric": "rent",
+   "scope": "county",
+   "ascending": true
+  },
+  {
+   "title": "Youngest countries in the Americas",
+   "metric": "median_age",
+   "scope": "country",
+   "ascending": true
+  },
+  {
+   "title": "Richest countries in the Americas",
+   "metric": "gdp_pc",
+   "scope": "country"
+  },
+  {
+   "title": "Women per man across the Americas",
+   "metric": "f_per_m",
+   "scope": "country"
+  }
+ ],
+ "unavailable": [
+  {
+   "topic": "Cosmetic surgery (BBL, breast augmentation)",
+   "why": "ASPS publishes national and 5-region totals only. No city or county series exists."
+  },
+  {
+   "topic": "Inheritance money",
+   "why": "The Fed's Survey of Consumer Finances is national. Investment-income households (ACS B19054) is the closest local proxy and is included."
+  },
+  {
+   "topic": "Facebook / Snapchat / Tinder / Bumble / Hinge / X usage",
+   "why": "Platforms do not publish users by location. Pew surveys are national."
+  },
+  {
+   "topic": "Porn use by location",
+   "why": "Only ad-hoc state-level marketing posts exist, not a maintained dataset."
+  },
+  {
+   "topic": "Interracial marriage",
+   "why": "Not in ACS summary tables. Needs a PUMS microdata run; planned."
+  }
+ ]
+}
