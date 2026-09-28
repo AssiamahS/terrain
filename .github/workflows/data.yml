@@ -19,16 +19,17 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install --quiet requests pyshp shapely
+      - run: pip install --quiet requests pyshp shapely pyproj pytrends pandas
       - name: Build dataset
         env:
           CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
+          DATA_GOV_API_KEY: ${{ secrets.DATA_GOV_API_KEY }}
         run: python pipeline/build_data.py
       - name: Commit data
         run: |

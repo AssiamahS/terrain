@@ -69,19 +69,19 @@ ACS_VARS = {
 # id, label, group, unit, one-line meaning, source, scopes
 CATALOG = [
     # People
-    ("pop", "Population", "People", "count", "Total residents.", "ACS 2023", ["county", "state", "country"]),
+    ("pop", "Population", "People", "count", "Total residents.", "ACS 2023", ["county", "state", "country", "ca_cd", "mx_mun", "br_mun"]),
     ("density", "People per sq mile", "People", "count", "Population divided by land area.", "ACS 2023 + TIGER", ["county", "state"]),
-    ("median_age", "Median age", "People", "years", "Half the residents are younger than this.", "ACS 2023 / Factbook", ["county", "state", "country"]),
-    ("age20s_pct", "20-somethings", "People", "pct", "Share of residents aged 20 to 29.", "ACS 2023", ["county", "state"]),
-    ("age30_34_pct", "Aged 30 to 34", "People", "pct", "Share of residents aged 30 to 34.", "ACS 2023", ["county", "state"]),
+    ("median_age", "Median age", "People", "years", "Half the residents are younger than this.", "ACS 2023 / Factbook", ["county", "state", "country", "ca_cd"]),
+    ("age20s_pct", "20-somethings", "People", "pct", "Share of residents aged 20 to 29.", "ACS 2023", ["county", "state", "ca_cd", "mx_mun", "br_mun"]),
+    ("age30_34_pct", "Aged 30 to 34", "People", "pct", "Share of residents aged 30 to 34.", "ACS 2023", ["county", "state", "ca_cd", "mx_mun", "br_mun"]),
     ("asian_pct", "Asian", "People", "pct", "Residents identifying as Asian alone.", "ACS 2023", ["county", "state"]),
-    ("black_pct", "Black", "People", "pct", "Residents identifying as Black alone.", "ACS 2023", ["county", "state"]),
+    ("black_pct", "Black", "People", "pct", "Residents identifying as Black alone.", "ACS 2023", ["county", "state", "ca_cd"]),
     ("hispanic_pct", "Hispanic or Latino", "People", "pct", "Residents of Hispanic or Latino origin.", "ACS 2023", ["county", "state"]),
     ("white_pct", "White", "People", "pct", "Residents identifying as White alone.", "ACS 2023", ["county", "state"]),
-    ("foreign_pct", "Foreign-born", "People", "pct", "Residents born outside the US.", "ACS 2023", ["county", "state"]),
+    ("foreign_pct", "Foreign-born", "People", "pct", "Residents born outside the US.", "ACS 2023", ["county", "state", "ca_cd"]),
     # Sex & relationships
-    ("f_per_m", "Women per man", "Sex & relationships", "ratio", "Females for every male, all ages.", "ACS 2023 / Factbook", ["county", "state", "country"]),
-    ("f_per_m_20_34", "Women per man, 20 to 34", "Sex & relationships", "ratio", "Females per male among 20 to 34 year olds.", "ACS 2023", ["county", "state"]),
+    ("f_per_m", "Women per man", "Sex & relationships", "ratio", "Females for every male, all ages.", "ACS 2023 / Factbook", ["county", "state", "country", "ca_cd", "mx_mun", "br_mun"]),
+    ("f_per_m_20_34", "Women per man, 20 to 34", "Sex & relationships", "ratio", "Females per male among 20 to 34 year olds.", "ACS 2023", ["county", "state", "ca_cd", "mx_mun", "br_mun"]),
     ("single_women_pct", "Single women", "Sex & relationships", "pct", "Women 15+ who have never married.", "ACS 2023", ["county", "state"]),
     ("married_women_pct", "Married women", "Sex & relationships", "pct", "Women 15+ married with spouse present.", "ACS 2023", ["county", "state"]),
     ("divorced_women_pct", "Divorced women", "Sex & relationships", "pct", "Women 15+ currently divorced.", "ACS 2023", ["county", "state"]),
@@ -94,7 +94,7 @@ CATALOG = [
     ("income", "Median household income", "Money", "money", "Half of households earn more than this.", "ACS 2023", ["county", "state"]),
     ("income_25_44", "Young household income", "Money", "money", "Median income where the householder is 25 to 44.", "ACS 2023", ["county", "state"]),
     ("invest_pct", "Households with investment income", "Money", "pct", "Households reporting interest, dividend or rental income. Closest public proxy for family money.", "ACS 2023", ["county", "state"]),
-    ("degree_pct", "Bachelor's or higher", "Money", "pct", "Adults 25+ with at least a bachelor's degree.", "ACS 2023", ["county", "state"]),
+    ("degree_pct", "Bachelor's or higher", "Money", "pct", "Adults 25+ with at least a bachelor's degree.", "ACS 2023", ["county", "state", "ca_cd"]),
     ("home_value", "Median home value", "Money", "money", "Owner-estimated median home value.", "ACS 2023", ["county", "state"]),
     ("rent", "Median rent", "Money", "money", "Median gross monthly rent.", "ACS 2023", ["county", "state"]),
     ("unemployment", "Unemployment", "Money", "pct", "Unemployed share of the civilian labor force.", "ACS 2023", ["county", "state"]),
@@ -118,9 +118,59 @@ CATALOG = [
     ("literacy", "Literacy", "People", "pct", "Adults who can read and write.", "CIA World Factbook", ["country"]),
     ("life_exp", "Life expectancy", "People", "years", "Life expectancy at birth.", "CIA World Factbook", ["country"]),
     ("net_migration", "Net migration per 1,000", "People", "count", "Net migrants per 1,000 people per year.", "CIA World Factbook", ["country"]),
+    # Looks pack (CDC PLACES 2024 = 2022 BRFSS, County Business Patterns, Google Trends)
+    ("fit_groomed", "Fit & groomed score", "Looks", "count", "0 to 100. Average rank of low obesity, low inactivity, gyms and salons per capita. Closest public stand-in for 'attractive'.", "CDC PLACES + CBP", ["county", "state"]),
+    ("obesity_pct", "Obesity", "Looks", "pct", "Adults with BMI 30 or more.", "CDC PLACES 2024", ["county", "state"]),
+    ("inactivity_pct", "No exercise", "Looks", "pct", "Adults with no leisure-time physical activity.", "CDC PLACES 2024", ["county", "state"]),
+    ("gyms_per_10k", "Gyms per 10k", "Looks", "rate", "Fitness and recreational sports centers (NAICS 713940) per 10,000 residents.", "County Business Patterns 2022", ["county", "state"]),
+    ("salons_per_10k", "Beauty & nail salons per 10k", "Looks", "rate", "Beauty salons plus nail salons (NAICS 812112, 812113) per 10,000 residents.", "County Business Patterns 2022", ["county", "state"]),
+    ("trend_bbl", "BBL search interest", "Looks", "count", "Google search interest for 'BBL', past 12 months, 0 to 100 by state. Counties show their state.", "Google Trends", ["county", "state"]),
+    ("trend_tinder", "Tinder search interest", "Looks", "count", "Google search interest for Tinder, 0 to 100 by state.", "Google Trends", ["county", "state"]),
+    ("trend_hinge", "Hinge search interest", "Looks", "count", "Google search interest for Hinge, 0 to 100 by state.", "Google Trends", ["county", "state"]),
+    ("trend_onlyfans", "OnlyFans search interest", "Looks", "count", "Google search interest for OnlyFans, 0 to 100 by state.", "Google Trends", ["county", "state"]),
+    ("depression_pct", "Depression", "Looks", "pct", "Adults ever told they have depression.", "CDC PLACES 2024", ["county", "state"]),
+    ("binge_pct", "Binge drinking", "Looks", "pct", "Adults reporting binge drinking.", "CDC PLACES 2024", ["county", "state"]),
+    ("smoking_pct", "Smoking", "Looks", "pct", "Adults who currently smoke.", "CDC PLACES 2024", ["county", "state"]),
+    ("isolation_pct", "Socially isolated", "Looks", "pct", "Adults who feel socially isolated.", "CDC PLACES 2024", ["county", "state"]),
+    # Interracial marriage (PUMS)
+    ("interracial_pct", "Interracial couples", "Sex & relationships", "pct", "Married couples whose spouses are of different race or Hispanic origin. Counties inherit their PUMA average.", "ACS PUMS 2023", ["county", "state"]),
+    # FBI state estimates
+    ("violent_crime", "Violent crime per 100k", "Crime & civic", "rate", "FBI state figure, latest year (2024). Counties show their state.", "FBI via OpenCrime", ["county", "state"]),
+    ("robbery", "Robbery per 100k", "Crime & civic", "rate", "FBI state figure, latest year (2024).", "FBI via OpenCrime", ["county", "state"]),
+    ("assault", "Aggravated assault per 100k", "Crime & civic", "rate", "FBI state figure, latest year (2024).", "FBI via OpenCrime", ["county", "state"]),
+    ("rape", "Rape per 100k", "Crime & civic", "rate", "FBI state figure, latest year (2024).", "FBI via OpenCrime", ["county", "state"]),
+    ("property_crime", "Property crime per 100k", "Crime & civic", "rate", "FBI state figure, latest year (2024).", "FBI via OpenCrime", ["county", "state"]),
+    ("burglary", "Burglary per 100k", "Crime & civic", "rate", "FBI state figure, latest year. Counties show their state.", "FBI via OpenCrime", ["county", "state"]),
+    ("vehicle_theft", "Vehicle theft per 100k", "Crime & civic", "rate", "FBI state figure, latest year. Counties show their state.", "FBI via OpenCrime", ["county", "state"]),
+    # Canada / Mexico / Brazil
+    ("married_pct", "Married or common-law", "Sex & relationships", "pct", "Share of people 15+ (12+ in Mexico) who are married or in a union.", "StatCan 2021 / INEGI 2020", ["ca_cd", "mx_mun"]),
+    ("single_pct", "Single (never in a union)", "Sex & relationships", "pct", "Share of people 15+ (12+ in Mexico) never married or in a union.", "StatCan 2021 / INEGI 2020", ["ca_cd", "mx_mun"]),
+    ("separated_pct", "Separated or divorced", "Sex & relationships", "pct", "Share of people 12+ separated, divorced or widowed.", "INEGI 2020", ["mx_mun"]),
+    ("income_cad", "Median household income (CAD)", "Money", "money", "Median total household income, 2020, Canadian dollars.", "StatCan 2021", ["ca_cd"]),
+    ("south_asian_pct", "South Asian", "People", "pct", "Share of residents who are South Asian.", "StatCan 2021", ["ca_cd"]),
+    ("chinese_pct", "Chinese", "People", "pct", "Share of residents who are Chinese.", "StatCan 2021", ["ca_cd"]),
+    ("filipino_pct", "Filipino", "People", "pct", "Share of residents who are Filipino.", "StatCan 2021", ["ca_cd"]),
+    ("age65_pct", "Aged 65+", "People", "pct", "Share of residents 65 and older.", "INEGI 2020", ["mx_mun"]),
+    ("schooling_years", "Years of schooling", "Money", "years", "Average years of schooling, people 15+.", "INEGI 2020", ["mx_mun"]),
+    ("born_elsewhere_pct", "Born in another state", "People", "pct", "Residents born in a different Mexican state.", "INEGI 2020", ["mx_mun"]),
+]
+
+SCOPES = [
+    {"id": "county", "title": "US counties", "geometry": "counties.geojson", "lat": 38.5, "lon": -96.5, "latDelta": 32, "lonDelta": 40},
+    {"id": "state", "title": "US states", "geometry": "states.geojson", "lat": 38.5, "lon": -96.5, "latDelta": 32, "lonDelta": 40},
+    {"id": "ca_cd", "title": "Canada", "geometry": "canada.geojson", "lat": 58, "lon": -96, "latDelta": 40, "lonDelta": 70},
+    {"id": "mx_mun", "title": "Mexico", "geometry": "mexico.geojson", "lat": 23.5, "lon": -102, "latDelta": 20, "lonDelta": 24},
+    {"id": "br_mun", "title": "Brazil", "geometry": "brazil.geojson", "lat": -14, "lon": -53, "latDelta": 40, "lonDelta": 40},
+    {"id": "country", "title": "Americas", "geometry": "countries.geojson", "lat": 10, "lon": -80, "latDelta": 110, "lonDelta": 100},
 ]
 
 SUGGESTIONS = [
+    {"title": "Fit & groomed", "metric": "fit_groomed", "scope": "county"},
+    {"title": "Interracial couples", "metric": "interracial_pct", "scope": "county"},
+    {"title": "Women per man, Mexico", "metric": "f_per_m_20_34", "scope": "mx_mun"},
+    {"title": "20-somethings, Brazil", "metric": "age20s_pct", "scope": "br_mun"},
+    {"title": "Single Canada", "metric": "single_pct", "scope": "ca_cd"},
+    {"title": "BBL country", "metric": "trend_bbl", "scope": "state"},
     {"title": "Where the 20-somethings are", "metric": "age20s_pct", "scope": "county"},
     {"title": "Most women per man (20 to 34)", "metric": "f_per_m_20_34", "scope": "county"},
     {"title": "Highest-paid young households", "metric": "income_25_44", "scope": "county"},
@@ -146,7 +196,7 @@ UNAVAILABLE = [
     {"topic": "Inheritance money", "why": "The Fed's Survey of Consumer Finances is national. Investment-income households (ACS B19054) is the closest local proxy and is included."},
     {"topic": "Facebook / Snapchat / Tinder / Bumble / Hinge / X usage", "why": "Platforms do not publish users by location. Pew surveys are national."},
     {"topic": "Porn use by location", "why": "Only ad-hoc state-level marketing posts exist, not a maintained dataset."},
-    {"topic": "Interracial marriage", "why": "Not in ACS summary tables. Needs a PUMS microdata run; planned."},
+    {"topic": "Attractiveness itself", "why": "No agency rates faces. The Looks group maps the measurable parts: obesity, exercise, gyms, salons, and what people search for."},
 ]
 
 
@@ -155,6 +205,10 @@ def log(*a):
 
 
 def get(url, **kw):
+    import extra
+    cached = extra.get(url, timeout=kw.pop("timeout", 120), tries=4, **kw) if extra.CACHE else None
+    if cached is not None:
+        return cached
     for attempt in range(4):
         try:
             r = requests.get(url, headers=UA, timeout=kw.pop("timeout", 120), **kw)
@@ -448,8 +502,23 @@ def derive(a, b=None, h=None, e=None, clubs=0, aland=None):
     return {k: v for k, v in m.items() if v is not None}
 
 
+def fit_score(table):
+    """0-100: mean percentile rank of low obesity, low inactivity, gyms, salons (needs at least 3 of 4)."""
+    parts = {"obesity_pct": -1, "inactivity_pct": -1, "gyms_per_10k": 1, "salons_per_10k": 1}
+    ranks = {}
+    for key, sign in parts.items():
+        vals = sorted((m[key] * sign, g) for g, m in table.items() if key in m)
+        n = len(vals)
+        for i, (_, g) in enumerate(vals):
+            ranks.setdefault(g, {})[key] = i / max(1, n - 1) * 100
+    for g, r in ranks.items():
+        if len(r) >= 3:
+            table[g]["fit_groomed"] = round(sum(r.values()) / len(r), 1)
+
+
 def main():
     t0 = time.time()
+    import extra
     log("ACS counties"); acs_c = acs("county:*")
     log("ACS states"); acs_s = acs("state:*")
     log("CBP counties"); cbp_c = cbp("county:*")
@@ -469,11 +538,45 @@ def main():
         clubs_s[geoid[:2]] += n
     log(f"  {len(pts)} venues, {sum(clubs_c.values())} inside a county")
 
+    log("CDC PLACES"); places = extra.cdc_places()
+    log("CBP extra"); cbpx_c = extra.cbp_extra("county:*"); cbpx_s = extra.cbp_extra("state:*")
+    log("Google Trends"); trends_s = extra.google_trends()
+    log("FBI"); fbi_s = extra.fbi_states()
+    log("PUMS interracial"); puma_vals, inter_s = extra.interracial(sorted({g[:2] for g in acs_c}))
+    inter_c = extra.puma_to_county(puma_vals) if puma_vals else {}
+    log(f"  interracial: {len(inter_c)} counties, {len(inter_s)} states")
+
     aland_c = {f["properties"]["GEOID"]: f["properties"]["ALAND"] for f in counties}
     aland_s = {f["properties"]["GEOID"]: f["properties"]["ALAND"] for f in states}
 
     metrics_c = {g: derive(a, cbp_c.get(g), chr_c.get(g), mit_c.get(g), clubs_c.get(g, 0), aland_c.get(g)) for g, a in acs_c.items()}
     metrics_s = {g: derive(a, cbp_s.get(g), chr_s.get(g), mit_s.get(g), clubs_s.get(g, 0), aland_s.get(g)) for g, a in acs_s.items()}
+    for g, m in metrics_c.items():
+        st = g[:2]
+        m.update(places.get(g, {}))
+        x = cbpx_c.get(g, {})
+        pop = m.get("pop")
+        if x.get("gyms") is not None: m["gyms_per_10k"] = div(x["gyms"], pop, 10_000)
+        sal = (x.get("beauty_salons") or 0) + (x.get("nail_salons") or 0)
+        if sal and pop: m["salons_per_10k"] = div(sal, pop, 10_000)
+        m.update(trends_s.get(st, {}))
+        m.update(fbi_s.get(st, {}))
+        if g in inter_c: m["interracial_pct"] = inter_c[g]
+    for g, m in metrics_s.items():
+        x = cbpx_s.get(g, {})
+        pop = m.get("pop")
+        if x.get("gyms") is not None: m["gyms_per_10k"] = div(x["gyms"], pop, 10_000)
+        sal = (x.get("beauty_salons") or 0) + (x.get("nail_salons") or 0)
+        if sal and pop: m["salons_per_10k"] = div(sal, pop, 10_000)
+        m.update(trends_s.get(g, {}))
+        m.update(fbi_s.get(g, {}))
+        if g in inter_s: m["interracial_pct"] = inter_s[g]
+        # state PLACES = population-weighted mean of its counties
+        for key in extra.PLACES_MEASURES.values():
+            rows = [(metrics_c[c][key], metrics_c[c].get("pop") or 0) for c in metrics_c if c.startswith(g) and key in metrics_c[c]]
+            if rows and sum(w for _, w in rows):
+                m[key] = round(sum(v * w for v, w in rows) / sum(w for _, w in rows), 2)
+    fit_score(metrics_c); fit_score(metrics_s)
 
     # names
     names_c = {g: a["name"] for g, a in acs_c.items()}
@@ -508,13 +611,21 @@ def main():
                           "geometry": {"type": f["geometry"]["type"], "coordinates": round_coords(f["geometry"]["coordinates"], 3)}})
     log(f"  {len(countries)} countries")
 
+    log("Canada"); metrics_ca, feats_ca = extra.canada()
+    log("Mexico"); metrics_mx, feats_mx = extra.mexico()
+    log("Brazil"); metrics_br, feats_br = extra.brazil()
+
     generated = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    (OUT / "canada.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats_ca}, separators=(",", ":")))
+    (OUT / "mexico.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats_mx}, separators=(",", ":")))
+    (OUT / "brazil.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats_br}, separators=(",", ":")))
     (OUT / "counties.geojson").write_text(json.dumps(slim(counties, names_c, metrics_c), separators=(",", ":")))
     (OUT / "states.geojson").write_text(json.dumps(slim(states, names_s, metrics_s), separators=(",", ":")))
     (OUT / "countries.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": countries}, separators=(",", ":")))
-    (OUT / "metrics.json").write_text(json.dumps({"generated": generated, "county": metrics_c, "state": metrics_s, "country": metrics_k}, separators=(",", ":")))
+    (OUT / "metrics.json").write_text(json.dumps({"generated": generated, "county": metrics_c, "state": metrics_s, "country": metrics_k, "ca_cd": metrics_ca, "mx_mun": metrics_mx, "br_mun": metrics_br}, separators=(",", ":")))
     catalog = {
         "generated": generated,
+        "scopes": SCOPES,
         "metrics": [dict(zip(("id", "label", "group", "unit", "about", "source", "scopes"), c)) for c in CATALOG],
         "suggestions": SUGGESTIONS,
         "unavailable": UNAVAILABLE,
@@ -522,7 +633,7 @@ def main():
     (OUT / "catalog.json").write_text(json.dumps(catalog, indent=1))
     coverage = {c[0]: sum(1 for v in metrics_c.values() if c[0] in v) for c in CATALOG}
     (OUT / "coverage.json").write_text(json.dumps({"generated": generated, "counties": len(metrics_c), "coverage": coverage}, indent=1))
-    log(f"done in {time.time() - t0:.0f}s: {len(metrics_c)} counties, {len(metrics_s)} states, {len(metrics_k)} countries")
+    log(f"done in {time.time() - t0:.0f}s: {len(metrics_c)} counties, {len(metrics_s)} states, {len(metrics_k)} countries, CA {len(metrics_ca)}, MX {len(metrics_mx)}, BR {len(metrics_br)}")
     log(json.dumps(coverage))
 
 

@@ -3,45 +3,52 @@ import MapKit
 
 struct ContentView: View {
     @Environment(DataStore.self) private var store
-    @AppStorage("scope") private var scopeRaw = Scope.county.rawValue
+    @AppStorage("scope") private var scopeID = "county"
     @AppStorage("metric") private var metricID = "age20s_pct"
+    @AppStorage("mode3d") private var mode3D = false
     @State private var selected: String?
     @State private var focus: String?
     @State private var showPicker = false
     @State private var showRanking = false
     @State private var ascending = false
+    @State private var snapshot: MKMapSnapshotter.Snapshot?
+    @State private var bars: [TerrainView.Bar] = []
+    @State private var building3D = false
 
-    private var scope: Scope { Scope(rawValue: scopeRaw) ?? .county }
+    private var scope: Scope { store.scope(scopeID) }
     private var metric: Metric? { store.metric(metricID) }
-    private var values: [String: Double] {
-        guard let table = store.metrics?.table(scope) else { return [:] }
-        return table.compactMapValues { $0[metricID] }
-    }
+    private var values: [String: Double] { store.values(metricID, scope: scopeID) }
+    private var breaks: [Double] { store.breaks(metricID, scope: scopeID) }
 
     var body: some View {
         ZStack(alignment: .top) {
-            MapView(features: store.features[scope] ?? [], scope: scope, metric: metric,
-                    values: values, breaks: store.breaks(metricID, scope: scope),
-                    selected: $selected, focus: $focus)
-                .ignoresSafeArea()
+            Group {
+                if mode3D, let snapshot {
+                    TerrainView(snapshot: snapshot, bars: bars, selected: $selected)
+                } else {
+                    MapView(features: store.features[scopeID] ?? [], scope: scope, metric: metric,
+                            values: values, breaks: breaks, selected: $selected, focus: $focus)
+                }
+            }
+            .ignoresSafeArea()
 
             VStack(spacing: 10) {
                 header
                 Spacer()
-                if let selected, let place = store.places[scope]?[selected] {
-                    DetailCard(place: place, scope: scope, primary: metricID) { self.selected = nil }
+                if let selected, let place = store.places[scopeID]?[selected] {
+                    DetailCard(place: place, scope: scopeID, primary: metricID) { self.selected = nil }
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 } else if let metric {
-                    Legend(metric: metric, breaks: store.breaks(metricID, scope: scope))
+                    Legend(metric: metric, breaks: breaks)
                 }
             }
             .padding(.horizontal, 14)
             .padding(.bottom, 12)
 
-            if store.loading {
+            if store.loading || building3D {
                 VStack(spacing: 8) {
                     ProgressView()
-                    Text(store.status).font(.footnote).foregroundStyle(.secondary)
+                    Text(building3D ? "Building terrain…" : store.status).font(.footnote).foregroundStyle(.secondary)
                 }
                 .padding(20).background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
                 .frame(maxHeight: .infinity)
@@ -57,9 +64,9 @@ struct ContentView: View {
         }
         .animation(.snappy, value: selected)
         .sheet(isPresented: $showPicker) {
-            MetricPicker(scope: scope, current: metricID) { m, s, asc in
+            MetricPicker(scope: scopeID, current: metricID) { m, s, asc in
                 metricID = m
-                scopeRaw = s.rawValue
+                scopeID = s
                 ascending = asc
                 selected = nil
                 showPicker = false
@@ -67,17 +74,22 @@ struct ContentView: View {
             .presentationDetents([.large])
         }
         .sheet(isPresented: $showRanking) {
-            RankingView(scope: scope, metricID: metricID, ascending: $ascending) { id in
+            RankingView(scope: scopeID, metricID: metricID, ascending: $ascending) { id in
                 selected = id
                 focus = id
                 showRanking = false
             }
             .presentationDetents([.medium, .large])
         }
-        .onChange(of: scopeRaw) { _, _ in
-            if let m = metric, !m.scopes.contains(scope.rawValue) {
-                metricID = store.catalog?.metrics.first { $0.scopes.contains(scope.rawValue) }?.id ?? metricID
+        .task(id: scopeID) {
+            await store.ensureGeometry(scope)
+            if let m = metric, !m.scopes.contains(scopeID) {
+                metricID = store.catalog?.metrics.first { $0.scopes.contains(scopeID) }?.id ?? metricID
             }
+            if mode3D { await build3D() }
+        }
+        .task(id: "\(mode3D)|\(metricID)|\(store.loading)") {
+            if mode3D, !store.loading { await build3D() }
         }
     }
 
@@ -99,17 +111,58 @@ struct ContentView: View {
                 .glassEffect(in: RoundedRectangle(cornerRadius: 18))
                 .buttonStyle(.plain)
 
+                Button { mode3D.toggle(); selected = nil } label: {
+                    Image(systemName: mode3D ? "map" : "cube").font(.title3).padding(12)
+                }
+                .glassEffect(.regular, in: Circle())
+                .buttonStyle(.plain)
+
                 Button { showRanking = true } label: {
                     Image(systemName: "list.number").font(.title3).padding(12)
                 }
                 .glassEffect(.regular, in: Circle())
                 .buttonStyle(.plain)
             }
-            Picker("Scope", selection: $scopeRaw) {
-                ForEach(Scope.allCases) { s in Text(s.title).tag(s.rawValue) }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(store.scopes) { s in
+                        Button(s.title) { scopeID = s.id; selected = nil }
+                            .font(.footnote.weight(s.id == scopeID ? .bold : .regular))
+                            .padding(.horizontal, 12).padding(.vertical, 7)
+                            .glassEffect(s.id == scopeID ? .regular.tint(Color(MapView.ramp[5]).opacity(0.7)) : .regular, in: Capsule())
+                            .buttonStyle(.plain)
+                    }
+                }
             }
-            .pickerStyle(.segmented)
         }
+    }
+
+    /// Snapshot the scope's region and turn the metric into bars.
+    private func build3D() async {
+        guard let cents = store.centroids[scopeID], !cents.isEmpty else { return }
+        building3D = true
+        defer { building3D = false }
+        let size = CGSize(width: 1400, height: 1400)
+        let center = CLLocationCoordinate2D(latitude: scope.lat, longitude: scope.lon)
+        let span = MKCoordinateSpan(latitudeDelta: scope.latDelta, longitudeDelta: scope.lonDelta)
+        guard let snap = try? await MapSnapshot.take(center: center, span: span, size: size) else { return }
+        let vals = values
+        let b = breaks
+        let sorted = vals.values.sorted()
+        // height on a rank scale so a few huge counties do not flatten everyone else
+        var rank: [Double: Double] = [:]
+        for (i, v) in sorted.enumerated() { rank[v] = Double(i) / Double(max(1, sorted.count - 1)) }
+        var out: [TerrainView.Bar] = []
+        for (id, c) in cents {
+            guard let v = vals[id] else { continue }
+            let p = snap.point(for: c)
+            guard p.x >= 0, p.y >= 0, p.x <= size.width, p.y <= size.height else { continue }
+            var cls = 0
+            for br in b where v > br { cls += 1 }
+            out.append(TerrainView.Bar(id: id, x: p.x, y: p.y, height: 0.05 + 0.95 * (rank[v] ?? 0), color: MapView.ramp[min(cls, MapView.ramp.count - 1)]))
+        }
+        snapshot = snap
+        bars = out
     }
 }
 
@@ -141,7 +194,7 @@ struct Legend: View {
 struct DetailCard: View {
     @Environment(DataStore.self) private var store
     let place: Place
-    let scope: Scope
+    let scope: String
     let primary: String
     let dismiss: () -> Void
 
@@ -164,7 +217,7 @@ struct DetailCard: View {
             }
             ScrollView {
                 let groups = Dictionary(grouping: rows, by: { $0.0.group })
-                ForEach(groups.keys.sorted(), id: \.self) { g in
+                ForEach(Catalog.groupOrder.filter { groups[$0] != nil }, id: \.self) { g in
                     Text(g.uppercased()).font(.caption2.bold()).foregroundStyle(.secondary).padding(.top, 6)
                     ForEach(groups[g] ?? [], id: \.0.id) { m, v in
                         HStack {
@@ -184,9 +237,9 @@ struct DetailCard: View {
 
 struct MetricPicker: View {
     @Environment(DataStore.self) private var store
-    let scope: Scope
+    let scope: String
     let current: String
-    let pick: (String, Scope, Bool) -> Void
+    let pick: (String, String, Bool) -> Void
     @State private var query = ""
 
     private var metrics: [Metric] {
@@ -194,6 +247,8 @@ struct MetricPicker: View {
         let q = query.trimmingCharacters(in: .whitespaces).lowercased()
         return all.filter { q.isEmpty || $0.label.lowercased().contains(q) || $0.about.lowercased().contains(q) || $0.group.lowercased().contains(q) }
     }
+
+    private func scopeTitle(_ id: String) -> String { store.scope(id).title }
 
     var body: some View {
         NavigationStack {
@@ -203,7 +258,7 @@ struct MetricPicker: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
                                 ForEach(sugg) { s in
-                                    Button(s.title) { pick(s.metric, Scope(rawValue: s.scope) ?? scope, s.ascending ?? false) }
+                                    Button(s.title) { pick(s.metric, s.scope, s.ascending ?? false) }
                                         .buttonStyle(.bordered).tint(Color(MapView.ramp[5])).font(.footnote)
                                 }
                             }
@@ -212,12 +267,12 @@ struct MetricPicker: View {
                     }
                 }
                 let groups = Dictionary(grouping: metrics, by: \.group)
-                ForEach(["People", "Sex & relationships", "Money", "Nightlife & business", "Crime & civic"], id: \.self) { g in
+                ForEach(Catalog.groupOrder, id: \.self) { g in
                     if let items = groups[g] {
                         Section(g) {
                             ForEach(items) { m in
                                 Button {
-                                    let target = m.scopes.contains(scope.rawValue) ? scope : Scope(rawValue: m.scopes.first ?? "county") ?? .county
+                                    let target = m.scopes.contains(scope) ? scope : (m.scopes.first ?? scope)
                                     pick(m.id, target, false)
                                 } label: {
                                     HStack {
@@ -227,8 +282,8 @@ struct MetricPicker: View {
                                         }
                                         Spacer()
                                         if m.id == current { Image(systemName: "checkmark").foregroundStyle(Color(MapView.ramp[5])) }
-                                        else if !m.scopes.contains(scope.rawValue) {
-                                            Text(m.scopes.contains("country") ? "Americas" : "US").font(.caption2).foregroundStyle(.tertiary)
+                                        else if !m.scopes.contains(scope) {
+                                            Text(m.scopes.map(scopeTitle).joined(separator: ", ")).font(.caption2).foregroundStyle(.tertiary).lineLimit(1)
                                         }
                                     }
                                 }
@@ -259,7 +314,7 @@ struct MetricPicker: View {
 
 struct RankingView: View {
     @Environment(DataStore.self) private var store
-    let scope: Scope
+    let scope: String
     let metricID: String
     @Binding var ascending: Bool
     let open: (String) -> Void

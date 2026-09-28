@@ -1,22 +1,17 @@
 import Foundation
 
-enum Scope: String, CaseIterable, Identifiable, Codable {
-    case county, state, country
-    var id: String { rawValue }
-    var title: String {
-        switch self {
-        case .county: return "US counties"
-        case .state: return "US states"
-        case .country: return "Americas"
-        }
-    }
-    var geometryFile: String {
-        switch self {
-        case .county: return "counties.geojson"
-        case .state: return "states.geojson"
-        case .country: return "countries.geojson"
-        }
-    }
+/// A map layer: US counties, US states, Canada, Mexico, Brazil, the Americas.
+/// Defined by the catalog so new countries appear without an app update.
+struct Scope: Codable, Identifiable, Hashable {
+    let id: String
+    let title: String
+    let geometry: String
+    let lat: Double
+    let lon: Double
+    let latDelta: Double
+    let lonDelta: Double
+
+    static let fallback = Scope(id: "county", title: "US counties", geometry: "counties.geojson", lat: 38.5, lon: -96.5, latDelta: 32, lonDelta: 40)
 }
 
 struct Metric: Codable, Identifiable, Hashable {
@@ -61,29 +56,47 @@ struct Unavailable: Codable, Identifiable, Hashable {
 
 struct Catalog: Codable {
     let generated: String
+    var scopes: [Scope]? = nil
     let metrics: [Metric]
     let suggestions: [Suggestion]
     let unavailable: [Unavailable]
+
+    var allScopes: [Scope] { scopes ?? [Scope.fallback] }
+    static let groupOrder = ["People", "Sex & relationships", "Looks", "Money", "Nightlife & business", "Crime & civic"]
 }
 
-struct MetricsFile: Codable {
+/// metrics.json: { generated, <scope id>: { <place id>: { <metric id>: value } } }
+struct MetricsFile: Decodable {
     let generated: String
-    let county: [String: [String: Double]]
-    let state: [String: [String: Double]]
-    let country: [String: [String: Double]]
+    let tables: [String: [String: [String: Double]]]
 
-    func table(_ scope: Scope) -> [String: [String: Double]] {
-        switch scope {
-        case .county: return county
-        case .state: return state
-        case .country: return country
-        }
+    struct DynamicKey: CodingKey {
+        var stringValue: String
+        var intValue: Int? { nil }
+        init?(stringValue: String) { self.stringValue = stringValue }
+        init?(intValue: Int) { nil }
     }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: DynamicKey.self)
+        var gen = ""
+        var t: [String: [String: [String: Double]]] = [:]
+        for key in c.allKeys {
+            if key.stringValue == "generated" {
+                gen = try c.decode(String.self, forKey: key)
+            } else if let table = try? c.decode([String: [String: Double]].self, forKey: key) {
+                t[key.stringValue] = table
+            }
+        }
+        generated = gen
+        tables = t
+    }
+
+    func table(_ scope: String) -> [String: [String: Double]] { tables[scope] ?? [:] }
 }
 
 struct Place: Identifiable, Hashable {
-    let id: String     // GEOID / ISO2
+    let id: String
     let name: String
     let st: String
-    var title: String { st.isEmpty ? name : "\(name)" }
 }

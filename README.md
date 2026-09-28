@@ -28,11 +28,24 @@ Nothing is built on a Mac. Two GitHub Actions do all the work:
 | Strip clubs | OpenStreetMap `amenity=stripclub` via Overpass |
 | Boundaries | Census cartographic boundaries 2023 (20m), Natural Earth 110m |
 | Countries | CIA World Factbook (factbook.json) |
+| Obesity, inactivity, depression, binge, smoking, isolation | CDC PLACES 2024 county release |
+| Gyms, beauty and nail salons | County Business Patterns 2022 (NAICS 713940, 812112, 812113) |
+| BBL / Tinder / Hinge / OnlyFans search interest | Google Trends by state (pytrends, best effort) |
+| Interracial couples | ACS PUMS 2023 via the Census microdata API, PUMA → county by tract crosswalk |
+| Violent crime, robbery, assault, rape, property crime | FBI Crime Data Explorer state estimates (needs `DATA_GOV_API_KEY`) |
+| Canada census divisions | Statistics Canada 2021 Census Profile SDMX API + cartographic boundary file |
+| Mexico municipios | INEGI Censo 2020 ITER + INEGI GeoJSON (MacWilliXD mirror) |
+| Brazil municípios | IBGE Censo 2022 via SIDRA + IBGE malhas API |
 
 Asked for but not publicly available by location: cosmetic surgery counts, inheritance, social app
-usage, porn use, interracial marriage (needs a PUMS run). The app lists these with the reason.
+usage, porn use, attractiveness itself. The app lists these with the reason and maps the closest
+measurable stand-ins under "Looks".
+
+The 3D mode snapshots the map with `MKMapSnapshotter`, lays it on a SceneKit plane and extrudes one
+bar per place (rank-scaled height, quantile color), the Human Terrain look.
 
 ## Secrets
 
-`CENSUS_API_KEY` (free, api.census.gov) for the data job; `ASC_KEY_ID` / `ASC_ISSUER_ID` /
+`CENSUS_API_KEY` (free, api.census.gov) and `DATA_GOV_API_KEY` (free, api.data.gov, for the FBI
+endpoints) for the data job; `ASC_KEY_ID` / `ASC_ISSUER_ID` /
 `ASC_KEY_P8` for signing.

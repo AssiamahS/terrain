@@ -42,7 +42,7 @@ struct MapView: UIViewRepresentable {
 
     func updateUIView(_ map: MKMapView, context: Context) {
         let c = context.coordinator
-        let key = "\(scope.rawValue)|\(metric?.id ?? "")|\(features.count)"
+        let key = "\(scope.id)|\(metric?.id ?? "")|\(features.count)"
         if c.overlayKey != key {
             c.overlayKey = key
             map.removeOverlays(map.overlays)
@@ -56,18 +56,10 @@ struct MapView: UIViewRepresentable {
                 }
             }
             map.addOverlays(overlays, level: .aboveRoads)
-            if scope != c.lastScope {
-                c.lastScope = scope
-                let region: MKCoordinateRegion
-                switch scope {
-                case .country:
-                    region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 10, longitude: -80),
-                                                span: MKCoordinateSpan(latitudeDelta: 110, longitudeDelta: 100))
-                default:
-                    region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 38.5, longitude: -96.5),
-                                                span: MKCoordinateSpan(latitudeDelta: 32, longitudeDelta: 40))
-                }
-                map.setRegion(region, animated: true)
+            if scope.id != c.lastScope {
+                c.lastScope = scope.id
+                map.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: scope.lat, longitude: scope.lon),
+                                                 span: MKCoordinateSpan(latitudeDelta: scope.latDelta, longitudeDelta: scope.lonDelta)), animated: true)
             }
         }
         c.parent = self
@@ -95,7 +87,7 @@ struct MapView: UIViewRepresentable {
     final class Coordinator: NSObject, MKMapViewDelegate {
         var parent: MapView
         var overlayKey = ""
-        var lastScope: Scope?
+        var lastScope: String?
         var lastFocus: String?
         var selectedKey: String?
         var overlayOwner: [ObjectIdentifier: String] = [:]

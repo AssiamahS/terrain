@@ -1,5 +1,61 @@
 {
- "generated": "2026-09-28T06:43:21Z",
+ "generated": "2026-09-28T07:42:50Z",
+ "scopes": [
+  {
+   "id": "county",
+   "title": "US counties",
+   "geometry": "counties.geojson",
+   "lat": 38.5,
+   "lon": -96.5,
+   "latDelta": 32,
+   "lonDelta": 40
+  },
+  {
+   "id": "state",
+   "title": "US states",
+   "geometry": "states.geojson",
+   "lat": 38.5,
+   "lon": -96.5,
+   "latDelta": 32,
+   "lonDelta": 40
+  },
+  {
+   "id": "ca_cd",
+   "title": "Canada",
+   "geometry": "canada.geojson",
+   "lat": 58,
+   "lon": -96,
+   "latDelta": 40,
+   "lonDelta": 70
+  },
+  {
+   "id": "mx_mun",
+   "title": "Mexico",
+   "geometry": "mexico.geojson",
+   "lat": 23.5,
+   "lon": -102,
+   "latDelta": 20,
+   "lonDelta": 24
+  },
+  {
+   "id": "br_mun",
+   "title": "Brazil",
+   "geometry": "brazil.geojson",
+   "lat": -14,
+   "lon": -53,
+   "latDelta": 40,
+   "lonDelta": 40
+  },
+  {
+   "id": "country",
+   "title": "Americas",
+   "geometry": "countries.geojson",
+   "lat": 10,
+   "lon": -80,
+   "latDelta": 110,
+   "lonDelta": 100
+  }
+ ],
  "metrics": [
   {
    "id": "pop",
@@ -11,7 +67,10 @@
    "scopes": [
     "county",
     "state",
-    "country"
+    "country",
+    "ca_cd",
+    "mx_mun",
+    "br_mun"
    ]
   },
   {
@@ -36,7 +95,8 @@
    "scopes": [
     "county",
     "state",
-    "country"
+    "country",
+    "ca_cd"
    ]
   },
   {
@@ -48,7 +108,10 @@
    "source": "ACS 2023",
    "scopes": [
     "county",
-    "state"
+    "state",
+    "ca_cd",
+    "mx_mun",
+    "br_mun"
    ]
   },
   {
@@ -60,7 +123,10 @@
    "source": "ACS 2023",
    "scopes": [
     "county",
-    "state"
+    "state",
+    "ca_cd",
+    "mx_mun",
+    "br_mun"
    ]
   },
   {
@@ -84,7 +150,8 @@
    "source": "ACS 2023",
    "scopes": [
     "county",
-    "state"
+    "state",
+    "ca_cd"
    ]
   },
   {
@@ -120,7 +187,8 @@
    "source": "ACS 2023",
    "scopes": [
     "county",
-    "state"
+    "state",
+    "ca_cd"
    ]
   },
   {
@@ -133,7 +201,10 @@
    "scopes": [
     "county",
     "state",
-    "country"
+    "country",
+    "ca_cd",
+    "mx_mun",
+    "br_mun"
    ]
   },
   {
@@ -145,7 +216,10 @@
    "source": "ACS 2023",
    "scopes": [
     "county",
-    "state"
+    "state",
+    "ca_cd",
+    "mx_mun",
+    "br_mun"
    ]
   },
   {
@@ -287,7 +361,8 @@
    "source": "ACS 2023",
    "scopes": [
     "county",
-    "state"
+    "state",
+    "ca_cd"
    ]
   },
   {
@@ -522,9 +597,403 @@
    "scopes": [
     "country"
    ]
+  },
+  {
+   "id": "fit_groomed",
+   "label": "Fit & groomed score",
+   "group": "Looks",
+   "unit": "count",
+   "about": "0 to 100. Average rank of low obesity, low inactivity, gyms and salons per capita. Closest public stand-in for 'attractive'.",
+   "source": "CDC PLACES + CBP",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "obesity_pct",
+   "label": "Obesity",
+   "group": "Looks",
+   "unit": "pct",
+   "about": "Adults with BMI 30 or more.",
+   "source": "CDC PLACES 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "inactivity_pct",
+   "label": "No exercise",
+   "group": "Looks",
+   "unit": "pct",
+   "about": "Adults with no leisure-time physical activity.",
+   "source": "CDC PLACES 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "gyms_per_10k",
+   "label": "Gyms per 10k",
+   "group": "Looks",
+   "unit": "rate",
+   "about": "Fitness and recreational sports centers (NAICS 713940) per 10,000 residents.",
+   "source": "County Business Patterns 2022",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "salons_per_10k",
+   "label": "Beauty & nail salons per 10k",
+   "group": "Looks",
+   "unit": "rate",
+   "about": "Beauty salons plus nail salons (NAICS 812112, 812113) per 10,000 residents.",
+   "source": "County Business Patterns 2022",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "trend_bbl",
+   "label": "BBL search interest",
+   "group": "Looks",
+   "unit": "count",
+   "about": "Google search interest for 'BBL', past 12 months, 0 to 100 by state. Counties show their state.",
+   "source": "Google Trends",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "trend_tinder",
+   "label": "Tinder search interest",
+   "group": "Looks",
+   "unit": "count",
+   "about": "Google search interest for Tinder, 0 to 100 by state.",
+   "source": "Google Trends",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "trend_hinge",
+   "label": "Hinge search interest",
+   "group": "Looks",
+   "unit": "count",
+   "about": "Google search interest for Hinge, 0 to 100 by state.",
+   "source": "Google Trends",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "trend_onlyfans",
+   "label": "OnlyFans search interest",
+   "group": "Looks",
+   "unit": "count",
+   "about": "Google search interest for OnlyFans, 0 to 100 by state.",
+   "source": "Google Trends",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "depression_pct",
+   "label": "Depression",
+   "group": "Looks",
+   "unit": "pct",
+   "about": "Adults ever told they have depression.",
+   "source": "CDC PLACES 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "binge_pct",
+   "label": "Binge drinking",
+   "group": "Looks",
+   "unit": "pct",
+   "about": "Adults reporting binge drinking.",
+   "source": "CDC PLACES 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "smoking_pct",
+   "label": "Smoking",
+   "group": "Looks",
+   "unit": "pct",
+   "about": "Adults who currently smoke.",
+   "source": "CDC PLACES 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "isolation_pct",
+   "label": "Socially isolated",
+   "group": "Looks",
+   "unit": "pct",
+   "about": "Adults who feel socially isolated.",
+   "source": "CDC PLACES 2024",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "interracial_pct",
+   "label": "Interracial couples",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Married couples whose spouses are of different race or Hispanic origin. Counties inherit their PUMA average.",
+   "source": "ACS PUMS 2023",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "violent_crime",
+   "label": "Violent crime per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year (2024). Counties show their state.",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "robbery",
+   "label": "Robbery per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year (2024).",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "assault",
+   "label": "Aggravated assault per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year (2024).",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "rape",
+   "label": "Rape per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year (2024).",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "property_crime",
+   "label": "Property crime per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year (2024).",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "burglary",
+   "label": "Burglary per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year. Counties show their state.",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "vehicle_theft",
+   "label": "Vehicle theft per 100k",
+   "group": "Crime & civic",
+   "unit": "rate",
+   "about": "FBI state figure, latest year. Counties show their state.",
+   "source": "FBI via OpenCrime",
+   "scopes": [
+    "county",
+    "state"
+   ]
+  },
+  {
+   "id": "married_pct",
+   "label": "Married or common-law",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Share of people 15+ (12+ in Mexico) who are married or in a union.",
+   "source": "StatCan 2021 / INEGI 2020",
+   "scopes": [
+    "ca_cd",
+    "mx_mun"
+   ]
+  },
+  {
+   "id": "single_pct",
+   "label": "Single (never in a union)",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Share of people 15+ (12+ in Mexico) never married or in a union.",
+   "source": "StatCan 2021 / INEGI 2020",
+   "scopes": [
+    "ca_cd",
+    "mx_mun"
+   ]
+  },
+  {
+   "id": "separated_pct",
+   "label": "Separated or divorced",
+   "group": "Sex & relationships",
+   "unit": "pct",
+   "about": "Share of people 12+ separated, divorced or widowed.",
+   "source": "INEGI 2020",
+   "scopes": [
+    "mx_mun"
+   ]
+  },
+  {
+   "id": "income_cad",
+   "label": "Median household income (CAD)",
+   "group": "Money",
+   "unit": "money",
+   "about": "Median total household income, 2020, Canadian dollars.",
+   "source": "StatCan 2021",
+   "scopes": [
+    "ca_cd"
+   ]
+  },
+  {
+   "id": "south_asian_pct",
+   "label": "South Asian",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share of residents who are South Asian.",
+   "source": "StatCan 2021",
+   "scopes": [
+    "ca_cd"
+   ]
+  },
+  {
+   "id": "chinese_pct",
+   "label": "Chinese",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share of residents who are Chinese.",
+   "source": "StatCan 2021",
+   "scopes": [
+    "ca_cd"
+   ]
+  },
+  {
+   "id": "filipino_pct",
+   "label": "Filipino",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share of residents who are Filipino.",
+   "source": "StatCan 2021",
+   "scopes": [
+    "ca_cd"
+   ]
+  },
+  {
+   "id": "age65_pct",
+   "label": "Aged 65+",
+   "group": "People",
+   "unit": "pct",
+   "about": "Share of residents 65 and older.",
+   "source": "INEGI 2020",
+   "scopes": [
+    "mx_mun"
+   ]
+  },
+  {
+   "id": "schooling_years",
+   "label": "Years of schooling",
+   "group": "Money",
+   "unit": "years",
+   "about": "Average years of schooling, people 15+.",
+   "source": "INEGI 2020",
+   "scopes": [
+    "mx_mun"
+   ]
+  },
+  {
+   "id": "born_elsewhere_pct",
+   "label": "Born in another state",
+   "group": "People",
+   "unit": "pct",
+   "about": "Residents born in a different Mexican state.",
+   "source": "INEGI 2020",
+   "scopes": [
+    "mx_mun"
+   ]
   }
  ],
  "suggestions": [
+  {
+   "title": "Fit & groomed",
+   "metric": "fit_groomed",
+   "scope": "county"
+  },
+  {
+   "title": "Interracial couples",
+   "metric": "interracial_pct",
+   "scope": "county"
+  },
+  {
+   "title": "Women per man, Mexico",
+   "metric": "f_per_m_20_34",
+   "scope": "mx_mun"
+  },
+  {
+   "title": "20-somethings, Brazil",
+   "metric": "age20s_pct",
+   "scope": "br_mun"
+  },
+  {
+   "title": "Single Canada",
+   "metric": "single_pct",
+   "scope": "ca_cd"
+  },
+  {
+   "title": "BBL country",
+   "metric": "trend_bbl",
+   "scope": "state"
+  },
   {
    "title": "Where the 20-somethings are",
    "metric": "age20s_pct",
@@ -636,8 +1105,8 @@
    "why": "Only ad-hoc state-level marketing posts exist, not a maintained dataset."
   },
   {
-   "topic": "Interracial marriage",
-   "why": "Not in ACS summary tables. Needs a PUMS microdata run; planned."
+   "topic": "Attractiveness itself",
+   "why": "No agency rates faces. The Looks group maps the measurable parts: obesity, exercise, gyms, salons, and what people search for."
   }
  ]
 }
